@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAccountWidgets } from '../../actions/index';
+import accountApi from '../../api/account'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
@@ -18,7 +19,7 @@ export class Account extends Component {
           name="form-field-name"
           value="one"
           options={this.selectOptions(accounts)}
-          onChange={this.logChange} />
+          onChange={this.logChange()} />
       </div>
     </div>
   }
@@ -37,8 +38,7 @@ export class Account extends Component {
   }
 
   logChange(val) {
-    console.log(val);
-    console.log("Selected: " + val);
+    return (val) => { accountApi.transferWidgets(this.props.account.id, val.value) };
   }
 }
 
