@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAccountWidgets } from '../../actions/index';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 export class Account extends Component {
   componentWillMount() {
@@ -9,12 +11,34 @@ export class Account extends Component {
 
   render() {
     const { account, accounts } = this.props;
-    return <div>{account.id} | {account.name} | widgets: {this.totalWidgets()}</div>
+    return <div>
+      <div>{account.id} | {account.name} | widgets: {this.totalWidgets()}</div>
+      <div>
+        <Select
+          name="form-field-name"
+          value="one"
+          options={this.selectOptions(accounts)}
+          onChange={this.logChange} />
+      </div>
+    </div>
   }
 
   totalWidgets() {
     if (!this.props.account.widgets) return 0
     return this.props.account.widgets.length
+  }
+
+  selectOptions(accounts) {
+    return Object.keys(accounts).map(function(key) {
+      const account = accounts[key];
+
+      return { value: account.id, label: account.name}
+    })
+  }
+
+  logChange(val) {
+    console.log(val);
+    console.log("Selected: " + val);
   }
 }
 
