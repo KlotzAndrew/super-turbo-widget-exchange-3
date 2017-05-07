@@ -11,7 +11,7 @@ const normalizer = (memo, obj) => ({
 
 const normalizePayload = payload => payload.reduce(normalizer, {});
 
-const addAccounts = (accounts = initialState.accounts, payload) => ({
+const addAccounts = (accounts, payload) => ({
   ...accounts,
   ...normalizePayload(payload)
 });
@@ -21,7 +21,7 @@ const accounts = (state = initialState, action) => {
     case types.SET_ACCOUNTS:
       return {
         ...state,
-        ...addAccounts(state.accounts, action.accounts)
+        accounts: addAccounts(state.accounts, action.accounts)
       }
     default:
       return state

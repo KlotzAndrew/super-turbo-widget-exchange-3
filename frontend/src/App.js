@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAccounts } from './actions/index';
 import logo from './logo.svg';
+import Account from './containers/account';
 import './App.css';
 
 class App extends Component {
@@ -12,21 +13,27 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {this.mapAccounts(this.props.accounts)}
       </div>
     );
+  }
+
+  mapAccounts(accounts) {
+    if (!accounts) return null;
+    return Object.keys(accounts).map(function(key) {
+      const account = accounts[key];
+
+      return <Account
+        key={key}
+        account={account}
+        accounts={accounts} />
+    })
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    accounts: state.accounts
+    accounts: state.accounts.accounts
   }
 }
 
