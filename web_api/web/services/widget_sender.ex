@@ -11,9 +11,17 @@ defmodule WebApi.WidgetSender do
 
   defp send_widget(widget, to_id) do
     HTTPoison.post(
-      "http://web_api:4000/widgets/receive",
-      Poison.encode!(%{token: widget.token, to_id: to_id}),
+      "http://web_api:4000/widgets",
+      encode_widget(widget.token, to_id),
       [{"Content-Type", "application/json"}]
     )
+
+    Repo.delete!(widget)
+  end
+
+  defp encode_widget(token, to_id) do
+    Poison.encode!(%{widget:
+      %{token: token, account_id: to_id}
+    })
   end
 end

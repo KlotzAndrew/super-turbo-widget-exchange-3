@@ -24,14 +24,6 @@ defmodule WebApi.WidgetController do
     end
   end
 
-  def receive(conn, params) do
-    IO.puts "GOT A TOKEN"
-    IO.inspect params
-
-    widgets = Repo.all(Widget)
-    render(conn, "index.json", widgets: widgets)
-  end
-
   def show(conn, %{"id" => id}) do
     widget = Repo.get!(Widget, id)
     render(conn, "show.json", widget: widget)

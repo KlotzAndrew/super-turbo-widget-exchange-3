@@ -21,7 +21,6 @@ defmodule WebApi.Router do
     post "/accounts/transfer_widgets", AccountController, :transfer_widgets
 
     resources "/widgets", WidgetController, except: [:new, :edit]
-    post "/widgets/receive", WidgetController, :receive
   end
 
   # Other scopes may use custom stacks.
