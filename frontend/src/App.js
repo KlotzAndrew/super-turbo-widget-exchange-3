@@ -25,7 +25,7 @@ class App extends Component {
 
       return <Account
         key={key}
-        account={account}
+        id={account.id}
         accounts={accounts} />
     })
   }

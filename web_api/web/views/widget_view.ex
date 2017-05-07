@@ -11,6 +11,7 @@ defmodule WebApi.WidgetView do
 
   def render("widget.json", %{widget: widget}) do
     %{id: widget.id,
-      token: widget.token}
+      token: widget.token,
+      account_id: widget.account_id}
   end
 end

@@ -1,10 +1,15 @@
 defmodule WebApi.WidgetController do
   use WebApi.Web, :controller
 
-  alias WebApi.Widget
+  alias WebApi.{Widget, WidgetFinder}
 
   def index(conn, _params) do
     widgets = Repo.all(Widget)
+    render(conn, "index.json", widgets: widgets)
+  end
+
+  def account_widgets(conn, %{"account_id" => account_id}) do
+    widgets = WidgetFinder.find_for_account(account_id)
     render(conn, "index.json", widgets: widgets)
   end
 

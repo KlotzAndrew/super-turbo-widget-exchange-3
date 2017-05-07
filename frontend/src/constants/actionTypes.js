@@ -1,1 +1,2 @@
 export const SET_ACCOUNTS = 'SET_ACCOUNTS';
+export const SET_ACCOUNT_WIDGETS = 'SET_ACCOUNT_WIDGETS';
