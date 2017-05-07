@@ -1,7 +1,7 @@
 defmodule WebApi.AccountController do
   use WebApi.Web, :controller
 
-  alias WebApi.Account
+  alias WebApi.{Account, WidgetSender}
 
   def index(conn, _params) do
     accounts = Repo.all(Account)
@@ -22,6 +22,13 @@ defmodule WebApi.AccountController do
         |> put_status(:unprocessable_entity)
         |> render(WebApi.ChangesetView, "error.json", changeset: changeset)
     end
+  end
+
+  def transfer_widgets(conn, %{"id" => id, "to_id" => to_id}) do
+    WidgetSender.transfer_all(id, to_id)
+
+    account = Repo.get!(Account, id)
+    render(conn, "show.json", account: account)
   end
 
   def show(conn, %{"id" => id}) do

@@ -38,5 +38,7 @@ defmodule WebApi.Endpoint do
     key: "_web_api_key",
     signing_salt: "bebgI3O7"
 
+  plug CORSPlug
+
   plug WebApi.Router
 end

@@ -14,11 +14,14 @@ defmodule WebApi.Router do
   end
 
   scope "/", WebApi do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :api # Use the default browser stack
 
     get "/", PageController, :index
     resources "/accounts", AccountController, except: [:new, :edit]
+    post "/accounts/transfer_widgets", AccountController, :transfer_widgets
+
     resources "/widgets", WidgetController, except: [:new, :edit]
+    post "/widgets/receive", WidgetController, :receive
   end
 
   # Other scopes may use custom stacks.

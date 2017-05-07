@@ -3,6 +3,7 @@ defmodule WebApi.Widget do
 
   schema "widgets" do
     field :token, :integer
+    field :account_id, :integer
 
     timestamps()
   end
@@ -12,7 +13,7 @@ defmodule WebApi.Widget do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:token])
-    |> validate_required([:token])
+    |> cast(params, [:token, :account_id])
+    |> validate_required([:token, :account_id])
   end
 end
