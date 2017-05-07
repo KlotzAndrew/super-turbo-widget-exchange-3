@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getAccounts } from './actions/index';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  componentWillMount() {
+    this.props.getAccounts();
+  }
+
   render() {
     return (
       <div className="App">
@@ -18,4 +24,13 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    accounts: state.accounts
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  { getAccounts }
+)(App);
