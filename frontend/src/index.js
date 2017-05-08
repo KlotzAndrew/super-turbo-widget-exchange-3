@@ -13,7 +13,7 @@ const store = createStore(
   applyMiddleware(thunk)
 )
 
-let socket = new Socket(`ws:localhost:4000/socket`);
+let socket = new Socket(`ws:192.168.99.100:5000/socket`);
 socket.connect();
 
 let channel = socket.channel('room:lobby', {});

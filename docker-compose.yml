@@ -10,5 +10,13 @@ services:
       - db
     command: mix phoenix.server
 
+  websocket_server:
+    build: ./websocket_server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./websocket_server:/code
+    command: mix phoenix.server
+
   db:
     image: postgres
