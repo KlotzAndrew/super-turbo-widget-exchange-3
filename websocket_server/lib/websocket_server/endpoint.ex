@@ -38,5 +38,7 @@ defmodule WebsocketServer.Endpoint do
     key: "_websocket_server_key",
     signing_salt: "XoeSpJLB"
 
+  plug CORSPlug
+
   plug WebsocketServer.Router
 end

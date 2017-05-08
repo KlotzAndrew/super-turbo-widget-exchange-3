@@ -20,7 +20,9 @@ defmodule WebsocketServer.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", WebsocketServer do
-  #   pipe_through :api
-  # end
+  scope "/api", WebsocketServer do
+    pipe_through :api
+
+    post "/broadcasts", BroadCastController, :broadcast
+  end
 end

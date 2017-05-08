@@ -22,6 +22,11 @@ channel.join()
   .receive('ok', resp => { console.log('Joined successfully', resp) })
   .receive('error', resp => { console.log('Unable to join', resp) })
 
+channel.on('new:message', payload => {
+    console.log("got a payload!", payload)
+  }
+);
+
 ReactDOM.render(
   <Provider store={store}>
     <App />
