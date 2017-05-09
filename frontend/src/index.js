@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk';
 import { Socket } from 'phoenix-socket';
+import { newMessage } from './actions/index'
 import App from './App';
 import reducer from './reducers/index'
 import './index.css';
@@ -23,7 +24,7 @@ channel.join()
   .receive('error', resp => { console.log('Unable to join', resp) })
 
 channel.on('new:message', payload => {
-    console.log("got a payload!", payload)
+    store.dispatch(newMessage(payload))
   }
 );
 

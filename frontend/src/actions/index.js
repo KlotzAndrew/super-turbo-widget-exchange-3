@@ -24,3 +24,21 @@ export const getAccountWidgets = (account_id) => dispatch => {
       dispatch(setAccountWidgets(response.data.data))
     })
 }
+
+const sentWidget = (widget) => ({
+  type: types.RECORD_SENT_WIDGET,
+  widget
+})
+
+const receivedWidget = (widget) => ({
+  type: types.RECORD_RECEIVED_WIDGET,
+  widget
+})
+
+export const newMessage = (payload) => dispatch => {
+  if (payload.status === "sent") {
+    dispatch(sentWidget(payload.widget))
+  } else {
+    dispatch(receivedWidget(payload.widget))
+  }
+}

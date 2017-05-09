@@ -22,6 +22,16 @@ const updateWidgetCollection = (account, widgets) => ({
   widgets: widgets.map(w => w.id)
 })
 
+const markWidgetSent = (account, widget) => ({
+  ...account,
+  widgets: account.widgets.filter(n => n !== widget.id)
+})
+
+const markWidgetReveived = (account, widget) => ({
+  ...account,
+  widgets: (account.widgets || []).concat(widget.id)
+})
+
 const accounts = (state = initialState, action) => {
   switch (action.type) {
     case types.SET_ACCOUNTS:
@@ -40,6 +50,22 @@ const accounts = (state = initialState, action) => {
           [account_id]: updateWidgetCollection(state.accounts[account_id], action.widgets)
         },
         widgets: addObjects(state.widgets, action.widgets)
+      }
+    case types.RECORD_SENT_WIDGET:
+      return {
+        ...state,
+        accounts: {
+          ...state.accounts,
+          [action.widget.account_id]: markWidgetSent(state.accounts[action.widget.account_id], action.widget)
+        }
+      }
+    case types.RECORD_RECEIVED_WIDGET:
+      return {
+        ...state,
+        accounts: {
+          ...state.accounts,
+          [action.widget.account_id]: markWidgetReveived(state.accounts[action.widget.account_id], action.widget)
+        }
       }
     default:
       return state
