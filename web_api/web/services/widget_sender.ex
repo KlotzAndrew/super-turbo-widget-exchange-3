@@ -1,6 +1,6 @@
 defmodule WebApi.WidgetSender do
   import Ecto.Query
-  alias WebApi.{Widget, Repo}
+  alias WebApi.{Widget, Repo, WebsocketClient}
 
   def transfer_all(id, to_id) do
     widgets = from(w in Widget, where: w.account_id == ^id)
@@ -15,6 +15,7 @@ defmodule WebApi.WidgetSender do
       encode_widget(widget.token, to_id),
       [{"Content-Type", "application/json"}]
     )
+    WebsocketClient.broadcast_widget(:sent, widget)
 
     Repo.delete!(widget)
   end

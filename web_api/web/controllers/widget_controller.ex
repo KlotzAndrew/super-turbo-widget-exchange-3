@@ -1,7 +1,7 @@
 defmodule WebApi.WidgetController do
   use WebApi.Web, :controller
 
-  alias WebApi.{Widget, WidgetFinder}
+  alias WebApi.{Widget, WidgetFinder, WebsocketClient}
 
   def index(conn, _params) do
     widgets = Repo.all(Widget)
@@ -18,6 +18,7 @@ defmodule WebApi.WidgetController do
 
     case Repo.insert(changeset) do
       {:ok, widget} ->
+        WebsocketClient.broadcast_widget(:received, widget)
         conn
         |> put_status(:created)
         |> put_resp_header("location", widget_path(conn, :show, widget))
