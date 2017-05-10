@@ -20,3 +20,8 @@ services:
 
   db:
     image: postgres
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
