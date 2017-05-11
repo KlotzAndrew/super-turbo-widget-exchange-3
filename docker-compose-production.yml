@@ -1,0 +1,23 @@
+version: '3.1'
+services:
+  web_api:
+    image: klotzandrew/superturbowidgetexchange3_web_api
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    command: mix phoenix.server
+
+  websocket_server:
+    image: klotzandrew/superturbowidgetexchange3_websocket_server
+    ports:
+      - "5000:5000"
+    command: mix phoenix.server
+
+  db:
+    image: postgres
+
+  frontend:
+    image: klotzandrew/superturbowidgetexchange3_frontend
+    ports:
+      - "80:80"

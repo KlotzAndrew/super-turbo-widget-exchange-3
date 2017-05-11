@@ -10,4 +10,6 @@ COPY mix.exs /code/mix.exs
 COPY mix.lock /code/mix.lock
 RUN mix deps.get
 
-COPY . ./code
+COPY . /code
+
+RUN mix compile
