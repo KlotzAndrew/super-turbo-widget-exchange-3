@@ -25,3 +25,5 @@ services:
     build: ./frontend
     ports:
       - "80:80"
+    volumes:
+      - ./frontend/build:/usr/share/nginx/html

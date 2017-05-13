@@ -14,7 +14,7 @@ const store = createStore(
   applyMiddleware(thunk)
 )
 
-let socket = new Socket(`ws:192.168.99.100:5000/socket`);
+let socket = new Socket(`ws:${process.env.REACT_APP_WEBSOCKET_SERVER}:5000/socket`);
 socket.connect();
 
 let channel = socket.channel('room:lobby', {});
