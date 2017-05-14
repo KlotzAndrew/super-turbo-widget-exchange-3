@@ -19,7 +19,7 @@ defmodule WebApi.Mixfile do
   def application do
     [mod: {WebApi, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :httpoison]]
+                    :phoenix_ecto, :postgrex, :httpoison, :amqp]]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,6 +40,7 @@ defmodule WebApi.Mixfile do
      {:httpoison, "~> 0.11.1"},
      {:poison, "~> 2.0"}, # NOTE: can't use 3.0, phoenix requires ~> 2.0
      {:cors_plug, "~> 1.2"},
+     {:amqp, "~> 0.2.2"},
      {:cowboy, "~> 1.0"}]
   end
 

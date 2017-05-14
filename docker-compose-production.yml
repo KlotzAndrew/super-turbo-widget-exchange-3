@@ -22,6 +22,15 @@ services:
     ports:
       - "80:80"
 
+  rabbitmq:
+    image: rabbitmq:3.6.9-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+
   visualizer:
     image: dockersamples/visualizer
     ports:
