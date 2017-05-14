@@ -4,7 +4,7 @@ defmodule WebApi.Producer do
   def publish(message) do
     {:ok, chan} = establish_connection()
 
-    Basic.publish chan, "gen_server_test_exchange", "", message
+    Basic.publish(chan, "gen_server_test_exchange", "", message, persistent: true)
   end
 
   defp establish_connection do
