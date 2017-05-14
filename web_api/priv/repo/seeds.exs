@@ -18,7 +18,7 @@ if Repo.aggregate(Account, :count, :id) == 0 do
 
     Repo.insert! %Account{name: "account_2"}
 
-    Enum.map 1..10, fn x ->
+    Enum.map 1..1000, fn x ->
       Repo.insert %Widget{token: x, account_id: account_1.id}
     end
   end
