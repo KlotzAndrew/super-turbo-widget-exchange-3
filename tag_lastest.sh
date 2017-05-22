@@ -18,7 +18,7 @@ cd ..
 echo "Building images..."
 docker-compose build --no-cache
 
-for NAME in web_api websocket_server frontend
+for NAME in web_api websocket_server frontend rabbit-1
 do
   docker tag "${APP_NAME}_${NAME}" "${USER}/${APP_NAME}_${NAME}"
   docker push "${USER}/${APP_NAME}_${NAME}"

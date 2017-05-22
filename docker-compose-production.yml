@@ -22,14 +22,34 @@ services:
     ports:
       - "80:80"
 
-  rabbitmq:
-    image: rabbitmq:3.6.9-management
+  haproxy:
+    image: superturbowidgetexchange3_haproxy
+
+  rabbit-1:
+    image: klotzandrew/superturbowidgetexchange3_rabbit-1
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5673:5672"
+      - "15673:15672"
     environment:
+      - RABBITMQ_ERLANG_COOKIE=abcdefg
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_NODENAME=rabbit@rabbit-1
+      - RABBITMQ_CLUSTER_NODES=rabbit@rabbit-2
+      - RABBITMQ_SETUP_DELAY=0
+
+  rabbit-2:
+    image: klotzandrew/superturbowidgetexchange3_rabbit-1
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=abcdefg
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_NODENAME=rabbit@rabbit-2
+      - RABBITMQ_CLUSTER_NODES=rabbit@rabbit-1
+      - RABBITMQ_SETUP_DELAY=30
+    ports:
+      - "5674:5672"
+      - "15674:15672"
 
   visualizer:
     image: dockersamples/visualizer
