@@ -8,7 +8,7 @@ defmodule WebApi.Producer do
   end
 
   defp establish_connection do
-    {:ok, conn} = Connection.open("amqp://guest:guest@rabbitmq")
+    {:ok, conn} = Connection.open("amqp://guest:guest@haproxy")
     Channel.open(conn)
   end
 end

@@ -17,7 +17,7 @@ defmodule WebApi.Consumer do
   end
 
   defp rabbitmq_connect do
-    case Connection.open("amqp://guest:guest@rabbitmq") do
+    case Connection.open("amqp://guest:guest@haproxy") do
       {:ok, conn} ->
         # Get notifications when the connection goes down
         Process.monitor(conn.pid)
