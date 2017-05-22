@@ -8,8 +8,8 @@ defmodule WebApi.Consumer do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 
-  @exchange    "gen_server_test_exchange"
-  @queue       "gen_server_test_queue"
+  @exchange    "widget_exchange"
+  @queue       "widget_queue"
   @queue_error "#{@queue}_error"
 
   def init(_opts) do
