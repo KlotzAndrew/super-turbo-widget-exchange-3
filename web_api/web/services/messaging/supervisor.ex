@@ -6,8 +6,16 @@ defmodule WebApi.MessageSupervisor do
   end
 
   def init(:ok) do
+    amqp_pool_options = [
+      {:name, {:local, :amqp_pool}},
+      {:worker_module, WebApi.AMQPPool},
+      {:size, 5},
+      {:max_overflow, 10}
+    ]
+
     children = [
-      worker(WebApi.Consumer, [])
+      worker(WebApi.Consumer, []),
+      :poolboy.child_spec(:amqp_pool, amqp_pool_options, [])
     ]
 
     supervise(children, strategy: :one_for_one)
