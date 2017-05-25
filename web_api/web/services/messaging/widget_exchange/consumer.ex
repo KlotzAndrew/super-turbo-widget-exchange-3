@@ -2,15 +2,11 @@ defmodule WebApi.Consumer do
   use GenServer
   use AMQP
 
-  alias WebApi.{Widget, Repo, WebsocketClient}
+  alias WebApi.{Conductor, Widget, Repo, WebsocketClient}
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
-
-  @exchange    "widget_exchange"
-  @queue       "widget_queue"
-  @queue_error "#{@queue}_error"
 
   def init(_opts) do
     :erlang.send_after(5000, self(), :listen)
@@ -22,17 +18,9 @@ defmodule WebApi.Consumer do
     Process.monitor(chan.pid)
     Process.flag(:trap_exit, true)
 
-    Confirm.select(chan)
-    Basic.qos(chan, prefetch_count: 10)
-    Queue.declare(chan, @queue_error, durable: true)
-    Queue.declare(chan, @queue, durable: true,
-                                arguments: [{"x-dead-letter-exchange", :longstr, ""},
-                                            {"x-dead-letter-routing-key", :longstr, @queue_error}])
-    Exchange.fanout(chan, @exchange, durable: true)
-    Queue.bind(chan, @queue, @exchange)
-    # boiler plate ^^
+    Conductor.configure(chan)
 
-    {:ok, _consumer_tag} = Basic.consume(chan, @queue)
+    {:ok, _consumer_tag} = Basic.consume(chan, Conductor.queue())
     {:noreply, chan}
   end
 
@@ -60,6 +48,12 @@ defmodule WebApi.Consumer do
     {:noreply, chan}
   end
 
+  def handle_info(msg, state) do
+    IO.puts "Consumer unexpected message #{msg}!"
+    :erlang.send_after(5000,self(), :listen)
+    {:noreply, state}
+  end
+
   defp consume(channel, tag, redelivered, payload) do
     decoded_params = Poison.decode!(payload)
     widget_params  = decoded_params["widget"]
@@ -85,11 +79,5 @@ defmodule WebApi.Consumer do
       IO.inspect exception
       Basic.reject channel, tag, requeue: not redelivered
       IO.puts "WebApi.Consumer ERROR converting #{payload}"
-  end
-
-  def handle_info(msg, state) do
-    IO.puts "Consumer unexpected message #{msg}!"
-    :erlang.send_after(5000,self(), :listen)
-    {:noreply, state}
   end
 end
