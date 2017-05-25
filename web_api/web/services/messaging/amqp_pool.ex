@@ -12,7 +12,8 @@ defmodule WebApi.AMQPPool do
   end
 
   def handle_info(:connect, state) do
-    handle_rabbit_connect(AMQP.Connection.open("amqp://guest:guest@haproxy"), state)
+    host = System.get_env("RMQ_HOST") || "haproxy"
+    handle_rabbit_connect(AMQP.Connection.open("amqp://guest:guest@" <> host), state)
   end
 
   def handle_rabbit_connect({:error, _}, _state) do

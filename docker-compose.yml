@@ -20,6 +20,8 @@ services:
 
   db:
     image: postgres
+    ports:
+      - "5432:5432"
 
   frontend:
     build: ./frontend
@@ -30,10 +32,15 @@ services:
 
   haproxy:
     build: ./haproxy
+    ports:
+      - "4369:4369"
+      - "5672:5672"
+      - "15672:15672"
 
   rabbit-1:
     build: ./rabbit
     ports:
+      - "4370:4369"
       - "5673:5672"
       - "15673:15672"
     environment:
@@ -54,6 +61,7 @@ services:
       - RABBITMQ_CLUSTER_NODES=rabbit@rabbit-1
       - RABBITMQ_SETUP_DELAY=30
     ports:
+      - "4371:4369"
       - "5674:5672"
       - "15674:15672"
 

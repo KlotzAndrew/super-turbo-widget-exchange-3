@@ -38,5 +38,5 @@ config :web_api, WebApi.Repo,
   username: "postgres",
   password: "",
   database: "web_api_dev",
-  hostname: "db",
+  hostname: System.get_env("DB_HOST") || "db",
   pool_size: 10
