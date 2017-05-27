@@ -1,7 +1,9 @@
 defmodule WebApi.WebsocketClient do
+  def host_url, do: System.get_env("WS_HOST") || "websocket_server"
+
   def broadcast_widget(:sent, widget) do
     HTTPoison.post(
-      "http://websocket_server:5000/api/broadcasts",
+      "http://#{host_url()}:5000/api/broadcasts",
       encode_widget_broadcast(:sent, widget),
       [{"Content-Type", "application/json"}]
     )
@@ -9,7 +11,7 @@ defmodule WebApi.WebsocketClient do
 
   def broadcast_widget(:received, widget) do
     HTTPoison.post(
-      "http://websocket_server:5000/api/broadcasts",
+      "http://#{host_url()}:5000/api/broadcasts",
       encode_widget_broadcast(:received, widget),
       [{"Content-Type", "application/json"}]
     )
