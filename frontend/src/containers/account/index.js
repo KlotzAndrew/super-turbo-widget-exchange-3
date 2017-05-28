@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { getAccountWidgets } from '../../actions/index';
 import accountApi from '../../api/account'
 import Select from 'react-select';
+import AccountInfo from '../../components/accountInfo'
+
 import 'react-select/dist/react-select.css';
 
 export class Account extends Component {
@@ -13,7 +15,7 @@ export class Account extends Component {
   render() {
     const { account, accounts } = this.props;
     return <div>
-      <div>{account.id} | {account.name} | widgets: {this.totalWidgets()}</div>
+      <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
       <div>
         <Select
           name="form-field-name"
