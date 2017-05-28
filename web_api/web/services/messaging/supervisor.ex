@@ -15,6 +15,7 @@ defmodule WebApi.MessageSupervisor do
 
     children = [
       worker(WebApi.Consumer, []),
+      worker(WebApi.RequestConsumer, []),
       :poolboy.child_spec(:amqp_pool, amqp_pool_options, [])
     ]
 

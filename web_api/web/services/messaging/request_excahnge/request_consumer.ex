@@ -1,8 +1,8 @@
-defmodule WebApi.Consumer do
+defmodule WebApi.RequestConsumer do
   use GenServer
   use AMQP
 
-  alias WebApi.{Conductor, Widget, Repo, WebsocketClient}
+  alias WebApi.{RequestConductor, Widget, Repo, WebsocketClient, Producer}
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
@@ -18,38 +18,38 @@ defmodule WebApi.Consumer do
     Process.monitor(chan.pid)
     Process.flag(:trap_exit, true)
 
-    Conductor.configure(chan)
+    RequestConductor.configure(chan)
 
-    {:ok, _consumer_tag} = Basic.consume(chan, Conductor.queue())
+    {:ok, _consumer_tag} = Basic.consume(chan, RequestConductor.queue())
     {:noreply, chan}
   end
 
   # Confirmation sent by the broker after registering this process as a consumer
   def handle_info({:basic_consume_ok, %{consumer_tag: _consumer_tag}}, chan) do
-    IO.puts "Consumer connected"
+    IO.puts "RequestConsumer connected"
     {:noreply, chan}
   end
 
   # Sent by the broker when the consumer is unexpectedly cancelled (such as after a queue deletion)
   def handle_info({:basic_cancel, %{consumer_tag: _consumer_tag}}, chan) do
-    IO.puts "Consumer unexpectedly disconnected"
+    IO.puts "RequestConsumer unexpectedly disconnected"
     {:stop, :normal, chan}
   end
 
   # Confirmation sent by the broker to the consumer process after a Basic.cancel
   def handle_info({:basic_cancel_ok, %{consumer_tag: _consumer_tag}}, chan) do
-    IO.puts "Consumer Basic.cancel"
+    IO.puts "RequestConsumer Basic.cancel"
     {:noreply, chan}
   end
 
   def handle_info({:basic_deliver, payload, %{delivery_tag: tag, redelivered: redelivered}}, chan) do
-    IO.puts "Consumer Basic.deliver"
+    IO.puts "RequestConsumer Basic.deliver"
     spawn fn -> consume(chan, tag, redelivered, payload) end
     {:noreply, chan}
   end
 
   def handle_info(msg, state) do
-    IO.puts "Consumer unexpected message"
+    IO.puts "RequestConsumer unexpected message"
     IO.inspect msg
     :erlang.send_after(5000,self(), :listen)
     {:noreply, state}
@@ -57,18 +57,12 @@ defmodule WebApi.Consumer do
 
   defp consume(channel, tag, redelivered, payload) do
     decoded_params = Poison.decode!(payload)
-    widget_params  = decoded_params["widget"]
-    changeset      = Widget.changeset(%Widget{}, widget_params)
+    widget_params  = decoded_params["widget_request"]
+    to_id          = widget_params["to_id"]
+    widget         = Repo.get(Widget, widget_params["id"])
 
-    case Repo.insert(changeset) do
-      {:ok, widget} ->
-        IO.puts "Consumer boadcasting :received!"
-        WebsocketClient.broadcast_widget(:received, widget)
-        Basic.ack channel, tag
-      {:error, _changeset} ->
-        Basic.reject channel, tag, requeue: false
-    end
-
+    delete_widget(widget, to_id)
+    Basic.ack channel, tag
   rescue
     # Requeue unless it's a redelivered message.
     # This means we will retry consuming a message once in case of exception
@@ -78,8 +72,25 @@ defmodule WebApi.Consumer do
     # Make sure you call ack, nack or reject otherwise comsumer will stop
     # receiving messages.
     exception ->
+      IO.puts "an error pusing request!"
       IO.inspect exception
       Basic.reject channel, tag, requeue: not redelivered
-      IO.puts "WebApi.Consumer ERROR converting #{payload}"
+      IO.puts "WebApi.WebsocketClient ERROR converting #{payload}"
+  end
+
+  defp delete_widget(nil, _to_id), do: IO.puts("Already deleted!")
+  defp delete_widget(widget, to_id) do
+    Repo.delete!(widget)
+
+    request = Producer.publish(encode_widget(widget.token, to_id))
+    WebsocketClient.broadcast_widget(:sent, widget)
+    IO.puts "RequestConsumer boadcasting :sent!"
+    IO.inspect request
+  end
+
+  defp encode_widget(token, to_id) do
+    Poison.encode!(%{widget:
+      %{token: token, account_id: to_id}
+    })
   end
 end
