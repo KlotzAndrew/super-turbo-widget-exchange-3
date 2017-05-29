@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { getAccountWidgets } from '../../actions/index';
 import accountApi from '../../api/account'
 import Select from 'react-select';
-import AccountInfo from '../../components/accountInfo'
+import AccountInfo from '../../components/accountInfo';
 
-import 'react-select/dist/react-select.css';
+import '!!style!css!react-select/dist/react-select.css'; // eslint-disable-line import/no-webpack-loader-syntax
 
 export class Account extends Component {
   componentWillMount() {

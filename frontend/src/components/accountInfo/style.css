@@ -1,0 +1,24 @@
+.body {
+  height: 100px;
+  width: 100px;
+  background-color: grey;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  margin: 15px;
+}
+.body:hover {
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.3);
+}
+
+.items {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
