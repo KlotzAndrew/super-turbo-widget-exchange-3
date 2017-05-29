@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAccountWidgets } from '../../actions/index';
-import accountApi from '../../api/account'
-import AccountInfo from '../../components/accountInfo';
-import AccountDrag from '../dnd/accountDrag';
-import AccountDrop from '../dnd/accountDrop';
+import accountApi from '../../api/account';
+import AccountInfo from '../accountInfo';
 
 export class Account extends Component {
   componentWillMount() {
@@ -14,11 +12,7 @@ export class Account extends Component {
   render() {
     const { account } = this.props;
     return <div>
-      <AccountDrop id={account.id}>
-        <AccountDrag id={account.id}>
-          <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
-        </AccountDrag>
-      </AccountDrop>
+      <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
     </div>
   }
 
@@ -31,7 +25,7 @@ export class Account extends Component {
     return Object.keys(accounts).map(function(key) {
       const account = accounts[key];
 
-      return { value: account.id, label: account.name}
+      return { value: account.id, label: account.name }
     })
   }
 
