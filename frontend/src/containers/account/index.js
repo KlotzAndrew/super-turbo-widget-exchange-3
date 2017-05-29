@@ -4,6 +4,7 @@ import { getAccountWidgets } from '../../actions/index';
 import accountApi from '../../api/account'
 import AccountInfo from '../../components/accountInfo';
 import AccountDrag from '../dnd/accountDrag';
+import AccountDrop from '../dnd/accountDrop';
 
 export class Account extends Component {
   componentWillMount() {
@@ -12,9 +13,12 @@ export class Account extends Component {
 
   render() {
     const { account } = this.props;
-    const accountInfo = <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
     return <div>
-      <AccountDrag component={accountInfo} />
+      <AccountDrop id={account.id}>
+        <AccountDrag id={account.id}>
+          <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
+        </AccountDrag>
+      </AccountDrop>
     </div>
   }
 
