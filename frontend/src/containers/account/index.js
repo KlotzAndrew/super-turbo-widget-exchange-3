@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAccountWidgets } from '../../actions/index';
-import accountApi from '../../api/account';
 import AccountInfo from '../accountInfo';
 
 export class Account extends Component {
@@ -27,10 +26,6 @@ export class Account extends Component {
 
       return { value: account.id, label: account.name }
     })
-  }
-
-  logChange(val) {
-    return (val) => { accountApi.transferWidgets(this.props.account.id, val.value) };
   }
 }
 

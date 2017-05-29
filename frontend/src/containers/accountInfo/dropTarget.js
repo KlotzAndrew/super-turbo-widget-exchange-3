@@ -16,7 +16,7 @@ const style = {
 
 const boxTarget = {
   drop(props) {
-    console.log('drop props!', props)
+    return { id: props.id };
   },
   canDrop(props, monitor) {
     const item = monitor.getItem();

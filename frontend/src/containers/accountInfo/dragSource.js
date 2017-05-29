@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
 import ItemTypes from '../../constants/itemTypes';
+import accountApi from '../../api/account';
 
 const style = {
   cursor: 'move',
@@ -19,8 +20,7 @@ const boxSource = {
     const dropResult = monitor.getDropResult();
 
     if (dropResult) {
-      console.log('endDrag item', item)
-      console.log('endDrag dropResult', dropResult)
+      accountApi.transferWidgets(item.id, dropResult.id)
     }
   },
 };
