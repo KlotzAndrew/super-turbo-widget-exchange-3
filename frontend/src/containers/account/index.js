@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAccountWidgets } from '../../actions/index';
 import accountApi from '../../api/account'
-import Select from 'react-select';
 import AccountInfo from '../../components/accountInfo';
-
-import '!!style!css!react-select/dist/react-select.css'; // eslint-disable-line import/no-webpack-loader-syntax
+import AccountDrag from '../dnd/accountDrag';
 
 export class Account extends Component {
   componentWillMount() {
@@ -13,16 +11,10 @@ export class Account extends Component {
   }
 
   render() {
-    const { account, accounts } = this.props;
+    const { account } = this.props;
+    const accountInfo = <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
     return <div>
-      <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
-      <div>
-        <Select
-          name="form-field-name"
-          value="one"
-          options={this.selectOptions(accounts)}
-          onChange={this.logChange()} />
-      </div>
+      <AccountDrag component={accountInfo} />
     </div>
   }
 
