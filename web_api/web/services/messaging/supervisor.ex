@@ -9,8 +9,8 @@ defmodule WebApi.MessageSupervisor do
     amqp_pool_options = [
       {:name, {:local, :amqp_pool}},
       {:worker_module, WebApi.AMQPPool},
-      {:size, 5},
-      {:max_overflow, 10}
+      {:size, 2},
+      {:max_overflow, 0}
     ]
 
     children = [

@@ -8,5 +8,6 @@ defmodule WebApi.Producer do
     Conductor.configure(chan)
 
     Basic.publish(chan, "widget_exchange", "", message, persistent: true)
+    Channel.close(chan)
   end
 end

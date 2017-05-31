@@ -7,7 +7,7 @@ defmodule WebApi.RequestConductor do
 
   def configure(chan) do
     Confirm.select(chan)
-    Basic.qos(chan, prefetch_count: 10)
+    Basic.qos(chan, prefetch_count: 9)
     Queue.declare(chan, queue_error(), durable: true)
     Queue.declare(chan, queue(), durable: true,
                                 arguments: [{"x-dead-letter-exchange", :longstr, ""},

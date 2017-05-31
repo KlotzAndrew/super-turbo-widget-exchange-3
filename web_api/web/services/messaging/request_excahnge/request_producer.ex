@@ -8,5 +8,6 @@ defmodule WebApi.RequestProducer do
     RequestConductor.configure(chan)
 
     Basic.publish(chan, RequestConductor.exchange(), "", message, persistent: true)
+    Channel.close(chan)
   end
 end

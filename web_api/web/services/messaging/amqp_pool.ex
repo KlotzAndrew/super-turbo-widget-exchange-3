@@ -37,7 +37,7 @@ defmodule WebApi.AMQPPool do
   end
 
   def handle_info(msg, state) do
-    IO.puts "Consumer unexpected message #{msg}!"
+    IO.puts "Consumer unexpected message!"
     IO.inspect msg
     {:noreply, state}
   end

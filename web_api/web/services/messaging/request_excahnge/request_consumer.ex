@@ -73,7 +73,7 @@ defmodule WebApi.RequestConsumer do
     # receiving messages.
     exception ->
       IO.puts "an error pusing request!"
-      IO.inspect exception
+      IO.inspect(exception, [label: "RequestConsumer exception"])
       Basic.reject channel, tag, requeue: not redelivered
       IO.puts "WebApi.WebsocketClient ERROR converting #{payload}"
   end
