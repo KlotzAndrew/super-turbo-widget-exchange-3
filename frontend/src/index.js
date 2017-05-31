@@ -7,11 +7,18 @@ import { Socket } from 'phoenix-socket';
 import { newMessage } from './actions/index'
 import App from './App';
 import reducer from './reducers/index'
+import logger from 'redux-logger'
 import './index.css';
+
+let middleware = [thunk]
+
+if (process.env.NODE_ENV === 'development') {
+  middleware = middleware.concat(logger)
+}
 
 const store = createStore(
   reducer,
-  applyMiddleware(thunk)
+  applyMiddleware(...middleware)
 )
 
 let socket = new Socket(`ws:${process.env.REACT_APP_WEBSOCKET_SERVER}:5000/socket`);
