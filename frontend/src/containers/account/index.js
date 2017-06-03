@@ -2,16 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getAccountWidgets } from '../../actions/index';
 import AccountInfo from '../accountInfo';
+import ProgressBar from '../../components/progressBar'
 
 export class Account extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {oldCount: 0, newCount: 0};
+  }
   componentWillMount() {
     this.props.getAccountWidgets(this.props.account.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState((prevState, props) => ({
+      oldCount: prevState.newCount,
+      newCount: nextProps.account.widgets ? nextProps.account.widgets.length : 0
+    }));
   }
 
   render() {
     const { account } = this.props;
     return <div>
       <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
+      <ProgressBar startValue={this.state.oldCount} endValue={this.state.newCount} max={75} />
     </div>
   }
 
