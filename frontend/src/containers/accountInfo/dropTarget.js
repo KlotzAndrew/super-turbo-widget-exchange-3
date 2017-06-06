@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
 import ItemTypes from '../../constants/itemTypes';
 import classNames from 'classnames/bind';
-import styles from './drop.css'
+import styles from './drop.scss'
 
 let cx = classNames.bind(styles);
 

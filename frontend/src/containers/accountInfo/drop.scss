@@ -1,0 +1,10 @@
+@import '../../styles/colors';
+
+.base {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.active {
+  box-shadow: 0px 0px 20px 10px $secondary-color-1
+}

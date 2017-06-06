@@ -1,7 +1,9 @@
+@import '../../styles/colors';
+
 .body {
   height: 100px;
   width: 100px;
-  background-color: grey;
+  background-color: $primary-color-1;
   border-radius: 50px;
   display: flex;
   align-items: center;

@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.1",
     "classnames": "^2.2.5",
+    "node-sass": "^4.5.3",
     "phoenix-socket": "^1.2.3",
     "react": "^15.5.4",
     "react-dnd": "^2.4.0",
@@ -15,7 +16,8 @@
     "react-select": "^1.0.0-rc.3",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "sass-loader": "^6.0.5"
   },
   "devDependencies": {
     "autoprefixer": "6.7.2",

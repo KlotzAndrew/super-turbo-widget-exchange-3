@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Motion, spring} from 'react-motion';
 
-import styles from './style.css'
+import styles from './style.scss'
 
 const maxSize = () => 400
 
