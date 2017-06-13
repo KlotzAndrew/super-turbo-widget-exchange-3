@@ -13,5 +13,5 @@ set -x
 
   rabbitmqctl start_app
 
-  rabbitmqctl set_policy ha-all "^ha\." '{"ha-mode":"all"}'
+  rabbitmqctl set_policy ha-all ".*" '{"ha-mode":"all"}'
 ) & rabbitmq-server "$@"
