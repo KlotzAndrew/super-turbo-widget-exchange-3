@@ -14,7 +14,7 @@ const barStyle = (value, max) => {
 }
 
 const percent = (value, max) => {
-  return Math.round(value/max * 100)
+  return Math.round(value/(max || 1) * 100)
 }
 
 const progressBar = (interpolatedStyles, max) => {

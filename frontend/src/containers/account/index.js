@@ -21,10 +21,11 @@ export class Account extends Component {
   }
 
   render() {
-    const { account } = this.props;
+    const { account, widgets } = this.props;
+    const max = Object.keys(widgets).length;
     return <div>
       <AccountInfo id={account.id} name={account.name} totalWidgets={this.totalWidgets()} />
-      <ProgressBar startValue={this.state.oldCount} endValue={this.state.newCount} max={75} />
+      <ProgressBar startValue={this.state.oldCount} endValue={this.state.newCount} max={max} />
     </div>
   }
 
@@ -44,7 +45,8 @@ export class Account extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    account: state.accounts.accounts[ownProps.id]
+    account: state.accounts.accounts[ownProps.id],
+    widgets: state.accounts.widgets
   }
 }
 
